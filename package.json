@@ -1,0 +1,23 @@
+{
+  "name": "bettv-scraper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "scraper.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://tursics@github.com/tursics/bettv-scraper.git"
+  },
+  "keywords": [],
+  "author": "Thomas Tursics <thomas@tursics.de> (http://tursics.de)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tursics/bettv-scraper/issues"
+  },
+  "homepage": "https://github.com/tursics/bettv-scraper#readme",
+  "dependencies": {
+    "request": "^2.81.0"
+  }
+}
