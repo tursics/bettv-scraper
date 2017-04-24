@@ -22,7 +22,9 @@ function getLivePZ(html) {
 		r = 0,
 		cols,
 		date,
-		points;
+		points,
+		arr = [],
+		key;
 
 	++r; // table
 	++r; // empty row
@@ -50,7 +52,12 @@ function getLivePZ(html) {
 		}
 	}
 
-	return livePZ;
+	for (key in livePZ) {
+		if (livePZ.hasOwnProperty(key)) {
+			arr.push({date: key, points: livePZ[key]});
+		}
+	}
+	return arr;
 }
 
 //-----------------------------------------------------------------------
@@ -76,21 +83,42 @@ function getContent(uri, callback) {
 
 //-----------------------------------------------------------------------
 
-function start() {
+function scrapePlayer(num, callback) {
 	'use strict';
 
 	var base = 'http://bettv.tischtennislive.de/default.aspx?L1=Public',
 		level = '&L2=Kontakt',
 		levelP = '&L2P=114792', // ??? 114784 // 114792
-		member = '&MID=93671',
+		member = '&MID=' + num, // 93671
 		page = '&Page1=Bilanz',
 		subPage = '&Page=EntwicklungTTR',
 		sa = '&SA=96', // ???
 		uri = base + level + levelP + member + page + subPage + sa;
 
 	getContent(uri, function (html) {
-		var livePZ = getLivePZ(html);
-		console.log(livePZ);
+		var filePath = './harvest/member' + num + '.json',
+			fs = require('fs'),
+			livePZ = getLivePZ(html);
+
+		fs.writeFileSync(filePath, JSON.stringify(livePZ));
+		callback();
+	});
+}
+
+//-----------------------------------------------------------------------
+
+function start() {
+	'use strict';
+
+	var filePath = './harvest',
+		fs = require('fs');
+
+	if (!fs.existsSync(filePath)) {
+		fs.mkdirSync(filePath);
+	}
+
+	scrapePlayer(93671, function () {
+		console.log('finish');
 	});
 }
 
